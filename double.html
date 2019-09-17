@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+<p>输入一个递增排序的数组和一个数字S，在数组中查找两个数，使得他们的和正好是S，如果有多对数字的和等于S，输出两个数的乘积最小的。（剑指offer）</p>
+<script>
+  //解法一
+  var a =  [1,2,4,7,11,15];
+  function FindNumbersWithSum(array, sum){
+    var res=[]
+    for(var i=0;i<array.length;i++) {
+      for (var j = i + 1; j < array.length; j++) {
+        var obj={}
+        if (array[i] + array[j] === sum) {
+          obj[array[i]] = array[j]
+          res.push(array[i],array[j])
+        }
+      }
+    }
+    console.log(res)
+    if(res.length>0){
+      return [res[0],res[1]]
+    }else{
+      return []
+    }
+    // if(res.length>0){
+    //   if (res.length === 2) {
+    //     return res
+    //   }
+    //   var min = res[0]*res[1];
+    //   for(var k =2;i<res.length;k++) {
+    //      if(res[k]*res[k+1]<min){
+    //        min = res[k]*res[k+1]
+    //      }
+    //     return [res[k],res[k+1]]
+    //   }
+    // }
+  }
+
+  //解法二
+  function find2(array, sum){
+  if(array.length < 2)
+    return [];
+    var start = 0,
+    end = array.length-1;
+    while(start < end){
+       if(array[start]+array[end] < sum){
+             start++;
+       }else if(array[start]+array[end] > sum){
+             end--;
+      }else{
+      return [array[start],array[end]];
+    }
+  }
+  return [];
+  }
+ console.log(FindNumbersWithSum(a,15))
+//  console.log(find2(a,10))
+</script>
+</body>
+</html>

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+<p>对于一个给定的字符序列S，请你把其循环左移K位后的序列输出。例如，字符序列S=”abcXYZdef”,要求输出循环左移3位后的结果，即“XYZdefabc”。（剑指offer）</p>
+<script>
+  var s = "abcXYZdef" ;
+  function removeLeft(str,n) {
+    if(str==null||str.length==0){
+      return "";
+    }
+    var res = "";
+    var s = str.slice(0, n);
+    console.log(s)
+    res = str.slice(n) + s;
+    return res;
+  }
+  //输出  XYZdefabc
+ console.log(removeLeft(s,3))
+
+</script>
+</body>
+</html>

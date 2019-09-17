@@ -1,0 +1,13 @@
+ if (e.keyCode === 38) {
+              //向上
+              if (index <= 0) {
+                index = newArr.length;
+              }
+              index--;
+            } else if (e.keyCode === 40) {
+              //向下
+              if (index >= newArr.length - 1) {
+                index = -1;
+              }
+              index++;
+            } else

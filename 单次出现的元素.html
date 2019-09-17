@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+<p>单次出现的元素（剑指offer）</p>
+<script>
+  //方法一
+  function FindNumsAppearOnce(array) {
+    // var aryDul = {};
+    // for (var i = 0; i < array.length; i++) {
+    //   var count = 1;
+    //   if (aryDul[array[i]]) {
+    //     aryDul[array[i]] = count++;
+    //   }
+    //   aryDul[array[i]] = count;
+    // }
+    // var res = [];
+    // for (var k in aryDul) {
+    //   if (aryDul[k] == 1) {
+    //     res.push(parseInt(k))
+    //   }
+    // }
+    // return res
+    var obj={};
+    var arr=[];
+    var length=array.length;
+    for(var i=0;i<length;i++){
+      if(array[i] in obj){
+        obj[array[i]]++;
+      }else{
+        obj[array[i]]=1;
+      }
+    }
+    console.log(obj)
+    for(attr in obj){
+      if(obj[attr] == 1){
+        arr.push(attr);
+      }
+    }
+    return arr;
+  }
+
+
+  //方法二
+  function FindNumsAppearOnce1(array)
+  {
+    // write code here
+    // return list, 比如[a,b]，其中ab是出现一次的两个数字
+    var arr = [];
+    for(var i = 0; i < array.length; i++) {
+      if(array.indexOf(array[i]) === array.lastIndexOf(array[i])) {
+        arr.push(array[i]);
+      }
+    }
+    return arr;
+  }
+  var array = [2,4,3,3,6,2,5,5];
+console.log(FindNumsAppearOnce(array))
+
+</script>
+</body>
+</html>

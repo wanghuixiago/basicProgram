@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script type="text/javascript" src="js/jquery-2.1.4.js" charset="utf-8"></script>
+		<style>
+			ul{
+				padding:0;
+			}
+		</style>
+	</head>
+	<body>
+	<div class="reg_lin1">
+		<div class="lin1_1">常用邮箱：</div>
+		<div class="lin1_2"><input type="text" class = "reg_text" id = "email" name = "email"/></div>
+		<div id="emails" ></div>
+    </div>
+	</body>
+<script>
+(function($) {
+  $.fn.mailAutoComplete = function (options) {
+    var defaults = {
+      boxClass: "mailListBox", //外部box样式
+      listClass: "mailListDefault", //默认的列表样式
+      focusClass: "mailListFocus", //列表选样式中
+      markCalss: "mailListHlignt", //高亮样式
+      zIndex: 1,
+      autoClass: true, //是否使用插件自带class样式
+      mailArr: ["qq.com", "gmail.com", "126.com", "163.com", "hotmail.com", "yahoo.com", "yahoo.com.cn", "live.com", "sohu.com", "sina.com"], //邮件数组
+      textHint: false, //文字提示的自动显示与隐藏
+      hintText: "",
+      focusColor: "#333"
+      //blurColor: "#999"
+    };
+    var settings = $.extend({}, defaults, options || {});
+    //页面装载CSS样式
+    if (settings.autoClass && $("#mailListAppendCss").size() === 0) {
+      $('<style id="mailListAppendCss" type="text/css">' +
+        '.mailListBox{border:1px solid #369; background:#fff; font:12px/20px Arial;}' +
+        '.mailListDefault{padding:0 5px;cursor:pointer;white-space:nowrap;}' +
+        '.mailListFocus {color:blue;background-color:#ccc }' +
+        '.mailHover {padding:3px 2px;list-style: none }'
+				+'</style>').appendTo($("head"));
+    }
+    cf = settings.focusClass, cm = settings.markCalss; //插件的class变量
+    var z = settings.zIndex, newArr = mailArr = settings.mailArr, hint = settings.textHint, text = settings.hintText,
+      fc = settings.focusColor, bc = settings.blurColor;
+    //创建邮件内部列表内容
+    var mailDiv = document.getElementById("emails");
+    $.createHtml = function (str, arr, cur) {
+			if(str==''){
+        mailDiv.innerHTML='';
+        return
+			}
+      mailDiv.innerHTML = '';
+      var uls = document.createElement('ul');
+      if ($.isArray(arr)) {
+        $.each(arr, function (i, n) {
+          var lis = document.createElement('li');
+          lis.className = 'mailHover';
+          lis.id = 'mailList' + '_' + i;
+
+          var spans = document.createElement('span');
+          spans.innerHTML = str + "@" + arr[i];
+          spans.onclick = function () {
+            $("#email").val(this.innerHTML);
+            mailDiv.innerHTML = '';
+          };
+          lis.appendChild(spans);
+          uls.appendChild(lis);
+          mailDiv.appendChild(uls)
+        });
+      }
+    };
+    //一些全局变量
+    var index = -1, s;
+    $(this).each(function () {
+      var that = $(this), i = $(".justForJs").size();
+      if (i > 0) { //只绑定一个文本框
+        return;
+      }
+      var w = that.outerWidth(), h = that.outerHeight(); //获取当前对象（即文本框）的宽高
+      that.focus(function () {
+        //父标签的层级
+        $(this).css("color", fc).parent().css("z-index", z);
+        //提示文字的显示与隐藏
+        if (hint && text) {
+          var focus_v = $.trim($(this).val());
+          if (focus_v === text) {
+            $(this).val("");
+          }
+        }
+        //键盘事件
+        $(this).keyup(function (e) {
+          console.log(this)
+          s = v = $.trim($(this).val());
+          if (/@/.test(v)) {
+            s = v.replace(/@.*/, "");
+          }
+          if (v.length >= 0) {
+           if (e.keyCode === 13) {
+              //回车
+              if (index > -1 && index < newArr.length) {
+                //如果当前有激活列表
+                $(this).val($("#mailList_" + index).text());
+                mailDiv.innerHTML = '';
+                return
+              }
+            } else {
+              if (/@/.test(v)) {
+                index = -1;
+                //获得@后面的值
+                //s = v.replace(/@.*/, "");
+                //创建新匹配数组
+                var site = v.replace(/.*@/, "");
+                newArr = $.map(mailArr, function (n) {
+                  var reg = new RegExp(site);
+                  if (reg.test(n)) {
+                    return n;
+                  }
+                });
+              } else {
+                newArr = mailArr;
+              }
+            }
+            $.createHtml(s, newArr, index);
+          }
+          //鼠标经过列表项事件
+          //鼠标经过
+          $(".mailHover").on("mouseover", function () {
+            index = Number($(this).attr("id").split("_")[1]);
+            liveValue = $("#mailList_" + index).text();
+            $(this).addClass(cf);
+            $(this).siblings().removeClass(cf)
+          });
+        });
+      });
+    })
+  }
+})(jQuery)
+$("#email").mailAutoComplete();
+
+	</script>
+</html>

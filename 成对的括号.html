@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+<p>括号合理性判断：
+  这道题没有难点，用栈来存放即可，注意可以先给八种括号赋值，方便之后的操</p>
+<script>
+
+  var validParentheses = function (parens) {
+    var arr = [];
+    var size = {
+      // (){}[]<>
+      '(' : 1,
+      '{' : 2,
+      '[' : 3,
+      '<' : 4,
+      ')' : 5,
+      '}' : 6,
+      ']' : 7,
+      '>' : 8
+    }
+    if(parens.length <= 1){return false;}
+
+    for(var i=0;i<parens.length;i++){
+      if(size[parens[i]] <= 4){
+        arr.push(parens[i]);
+        console.log(arr)
+      }
+      else{
+        var a = arr.pop();
+        console.log(a)
+        if(size[a] !== (size[parens[i]]-4)){return false;}
+      }
+    }
+    console.log(arr)
+    if(arr.length){return false;}
+    return true;
+  }
+  console.log(validParentheses('(){}<'));
+</script>
+</body>
+</html>
